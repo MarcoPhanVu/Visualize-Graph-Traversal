@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Graph Traversal Visualized</title>
+	<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+	<header class="hidden">
+		<p class="title">Graph Traversal Visualization</p>
+		<p class="sub-title">Dijsktra and Prim</p>
+	</header>
+	<div class="main-container">
+		<div class="displayer">
+
+			<!-- <svg class="line">
+				<circle r="20"></circle>
+			</svg> -->
+			<table class="node-table">
+				<thead class="node-list">
+					<tr>
+						<td>Some</td>
+						<td>Thing</td>
+						<td>IDK</td>
+					</tr>
+				</thead>
+				<tbody class="dist-table">
+					<tr>
+						<td class="report-temp">R1</td>
+						<td class="report-temp">R2</td>
+						<td class="report-temp">R3</td>
+					</tr>
+					<tr>
+						<td>Some
+							<p id="log">Move your mouse around.</p>
+						</td>
+						<td>Thing</td>
+						<td>IDK</td>
+					</tr>
+					<tr>
+						<td>Some</td>
+						<td>Thing</td>
+						<td>IDK</td>
+					</tr>
+				</tbody>
+
+
+				<svg class="node" width="100" height="100">
+					Node 1
+					<circle r="50" cy="50" cx="50"></circle>
+				</svg>
+			</table>
+		</div>
+		<div class="side-bar hidden">
+			<ul class="actions-tab">
+				<li><button class="action-btn">Create node</button></li>
+				<li><button class="action-btn">Delete node</button></li>
+				<li><button class="action-btn">Join</button></li>
+				<li><button class="action-btn">Unjoin</button></li>
+				<li><button class="action-btn">Run Dijsktra</button></li>
+				<li><button class="action-btn">Run Prim</button></li>
+				<li><button class="action-btn">Delete Graph</button></li>
+			</ul>
+		</div>
+	</div>
+	<script src="./script.js"></script>
+</body> 
+</html>
