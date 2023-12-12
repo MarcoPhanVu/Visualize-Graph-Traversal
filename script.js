@@ -1,26 +1,24 @@
 const nodesEleList = document.querySelectorAll(".node");
 const lineEleList = document.querySelectorAll(".node");
-
 const reportEle = document.querySelectorAll(".report-temp");
 
-let count = 0;
+let selectedNodes = [];
 
+nodesEleList.forEach(node => {
+	node.addEventListener("mousedown", dragElement);
 
-const nOrg = document.getElementById("node-org")
-// console.log(nOrg)
-
+	node.addEventListener("click", selectNode);
+});
 
 function dragElement(ev) {
 	ev.preventDefault();
-
+	//Use document to prevent ele doesn't move that fast accourding to Mouse -> mouse went out of div and broke the algo(?)
+	let node = ev.target;
 	let nodeSVG = ev.target.parentElement;
-	let initMouseX = 0;
-	let initMouseY = 0;
-
 
 	if (nodeSVG.tagName == "svg") { // Make sure that we selected the node
 		ev.onmousedown = initDrag(ev);
-		reportEle[1].innerHTML = nodeSVG.dataset.nodeValue;	
+		reportEle[1].innerHTML = nodeSVG.dataset.nodeId;
 
 		reportEle[10].innerHTML = nodeSVG.style.left;
 		reportEle[11].innerHTML = nodeSVG.style.top;
@@ -28,18 +26,10 @@ function dragElement(ev) {
 
 	function initDrag(ev) {
 		ev.preventDefault();
-		console.log("INIT DRAGGED")
-
-		//Use document to prevent ele doesn't move that fast accourding to Mouse -> mouse went out of div and broke the algo(?)
-
-		// get initial Mouse position to calculate offset
-		initMouseX = ev.clientX; 
-		initMouseY = ev.clientY;
-
 		// can't use offset(only support HTML elements) because SVG doesn't support it'
-		// get offset relative to node when mouse clicked on node
-		offsetX = initMouseX - ev.target.getBoundingClientRect().left;
-		offsetY = initMouseY - ev.target.getBoundingClientRect().top;
+		// get mouse offset relative to node when mouse clicked on node
+		offsetX = ev.clientX - node.getBoundingClientRect().left;
+		offsetY = ev.clientY - node.getBoundingClientRect().top;
 
 		document.onmouseup = stopDrag;
 		document.onmousemove = moveEle;
@@ -64,31 +54,30 @@ function dragElement(ev) {
 	}
 }
 
+function selectNode(ev) {
+	console.log("YO!")
+	let node = ev.target;
+	console.log(node.classList);
+	if (node.classList.contains("selected")) {
+		console.log("selected")
+		node.classList.remove("selected");
+		selectedNodes.pop(node);
+	} else {
+		if(selectedNodes.length < 2) {
+			console.log("over")
 
-nodesEleList.forEach(node => {
-	node.addEventListener("mousedown", dragElement);
-});
+			node.classList.add("selected");
+			selectedNodes.push(node);
+			return;
+		}
+	}
+	// node.classList.toggle("selected");
+}
 
 const displayer = document.getElementById("displayer");
 displayer.addEventListener("mousemove", updateMouseLoc);
 
 function updateMouseLoc(ev) {
-	// console.log(ev)
 	reportEle[4].innerHTML = ev.clientX;
 	reportEle[5].innerHTML = ev.clientY;
 }
-
-// document.addEventListener('mousemove', (ev) => {
-// 	reportEle[0].innerHTML = ev.clientX;
-// 	reportEle[1].innerHTML = ev.clientY;
-// })
-
-
-// function logMovement(event) {
-// 	log.insertAdjacentHTML(
-// 		"afterbegin",
-// 		`movement: ${event.movementX}, ${event.movementY}<br>`,
-// 	);
-// 	while (log.childNodes.length > 128) log.lastChild.remove();
-// }
-// document.addEventListener("mousemove", logMovement);
