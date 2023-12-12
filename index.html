@@ -12,45 +12,56 @@
 		<p class="sub-title">Dijsktra and Prim</p>
 	</header>
 	<div class="main-container">
-		<div class="displayer">
-
-			<!-- <svg class="line">
-				<circle r="20"></circle>
-			</svg> -->
+		<div class="displayer" id="displayer">
 			<table class="node-table">
 				<thead class="node-list">
 					<tr>
-						<td>Some</td>
-						<td>Thing</td>
-						<td>IDK</td>
+						<td>Ele</td>
+						<td>PosX</td>
+						<td>PosY</td>
 					</tr>
 				</thead>
 				<tbody class="dist-table">
 					<tr>
-						<td class="report-temp">R1</td>
+						<td class="report-temp">Ele Name</td>
+						<td class="report-temp">Thing</td>
+						<td class="report-temp">IDK</td>
+					</tr>
+					<tr>
+						<td class="report-temp">Mouse</td>
 						<td class="report-temp">R2</td>
 						<td class="report-temp">R3</td>
 					</tr>
 					<tr>
-						<td>Some
-							<p id="log">Move your mouse around.</p>
-						</td>
-						<td>Thing</td>
-						<td>IDK</td>
+						<td class="report-temp">offset Mouse to SVG</td>
+						<td class="report-temp">Thing</td>
+						<td class="report-temp">IDK</td>
 					</tr>
 					<tr>
-						<td>Some</td>
-						<td>Thing</td>
-						<td>IDK</td>
+						<td class="report-temp">Offset OrgX</td>
+						<td class="report-temp">Thing</td>
+						<td class="report-temp">IDK</td>
+					</tr>
+					<tr>
+						<td class="report-temp">Ele Pos Y</td>
+						<td class="report-temp">Thing</td>
+						<td class="report-temp">IDK</td>
 					</tr>
 				</tbody>
-
-
-				<svg class="node" width="100" height="100">
-					Node 1
-					<circle r="50" cy="50" cx="50"></circle>
-				</svg>
 			</table>
+
+			<svg class="node" width="100" height="100" style="top: 200px; left: 200px;" data-node-value="Node Org">
+				Node 1
+				<circle r="50" cy="50" cx="50" id="node-org"></circle>
+			</svg>
+			<svg class="node" width="100" height="100" style="top: 400px; left: 400px;" data-node-value="Node Selected">
+				Node 1
+				<circle r="50" cy="50" cx="50"></circle>
+			</svg>
+			<svg class="node" width="100" height="100" style="top: 50px; left: 600px;" data-node-value="Node">
+				Node 1
+				<circle r="50" cy="50" cx="50"></circle>
+			</svg>
 		</div>
 		<div class="side-bar hidden">
 			<ul class="actions-tab">

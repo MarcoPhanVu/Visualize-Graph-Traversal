@@ -78,14 +78,14 @@ body {
 
 .node {
 	position: absolute;
-	top: 48px;
-	left: 72px;
-	cursor: move;
+
 	background-color: #e3feef;
 }
 
 .node > circle {
 	fill: coral;
+	cursor: move;
+
 }
 
 .node > rect {
