@@ -1,18 +1,20 @@
 // convert to array so that they can be manipulate later
-const nodesEleList = Array.from(document.querySelectorAll(".node"));
-const lineEleList = Array.from(document.querySelectorAll(".node"));
+const nodesEleList = Array.from(document.querySelectorAll(".node")); // NODES will be SVG
+const linesEleList = Array.from(document.querySelectorAll(".line"));
+const lineContainer = document.querySelector(".line-container")
 
 const reportEle = document.querySelectorAll(".report-temp");
+const selectedNodeRecord = document.querySelectorAll(".selectedNode");
+
+const joinWarning = document.getElementById("joinNeed2N");
+const unjoinWarning = document.getElementById("unjoinNeed2N");
+const maxNodesWarning = document.getElementById("max2Nodes");
 
 let nOrg = nodesEleList[0];
+let lOrg = linesEleList[0];
 
 let selectedNodes = [];
 
-nodesEleList.forEach(node => {
-	node.addEventListener("mousedown", dragElement);
-
-	node.addEventListener("click", selectNode);
-});
 
 function dragElement(ev) {
 	ev.preventDefault();
@@ -46,17 +48,12 @@ function dragElement(ev) {
 	function moveEle(ev) {
 		ev.preventDefault();
 
-		reportEle[13].innerHTML = ev.clientX;
-		reportEle[14].innerHTML = ev.clientY;
-
-		reportEle[7].innerHTML = "offsetX= " + offsetX;
-		reportEle[8].innerHTML = "offsetY= " + offsetY;
+		console.log(ev)
 
 		nodeSVG.style.top = (ev.clientY - offsetY) + "px";
 		nodeSVG.style.left = (ev.clientX - offsetX) + "px";
 
 		ev.target.parentElement.dataset.nodeHeld = "true";
-		console.log(ev.target.parentElement.dataset)
 	}
 
 	function stopDrag(ev) {
@@ -66,21 +63,26 @@ function dragElement(ev) {
 }
 
 function selectNode(ev) {
+	// node only = circle here
 	let node = ev.target;
 	if (ev.target.tagName == "text") {
-		console.log("TETET")
 		node = ev.target.parentElement.querySelector("circle");
 	}
-	console.log(node.parentElement.dataset.nodeHeld)
 
 	if (node.parentElement.dataset.nodeHeld == "false") {		
 		if (node.classList.contains("selected")) {
 			node.classList.remove("selected");
-			selectedNodes.pop(node);
+			// selectedNodes.pop(node);
+
+			updateSelectedNodes(node.parentElement, "remove");
+
 		} else {
 			if(selectedNodes.length < 2) {	
 				node.classList.add("selected");
-				selectedNodes.push(node);
+				// selectedNodes.push(node);
+				// console.log("NODE: ", node.parentElement.dataset)
+
+				updateSelectedNodes(node.parentElement, "add");
 				return;
 			}
 		}
@@ -89,9 +91,34 @@ function selectNode(ev) {
 	node.parentElement.dataset.nodeHeld = false;
 }
 
-const displayer = document.getElementById("displayer");
-displayer.addEventListener("mousemove", updateMouseLoc);
+function updateSelectedNodes(node, action="add") {
+	if (node.tagName == "circle") {
+		console.log("NO UPDATE, Node is: ", node);
+		return;
+	}
 
+	if (action == "add") {
+		if (selectedNodes.length >= 2) {
+			console.log("NO MORE, tooo much nodes selected");
+			return;
+		}
+
+		selectedNodes.push(node);
+	}
+
+	if (action == "remove") {
+		if (selectedNodes.length <= 0) {
+			console.log("There's no nodes to remove");
+			return;
+		}
+
+		selectedNodes.splice(selectedNodes.indexOf(node), 1); // 1 = remove 1 only
+	}
+}
+
+const displayer = document.getElementById("displayer");
+
+displayer.addEventListener("mousemove", updateMouseLoc);
 function updateMouseLoc(ev) {
 	reportEle[4].innerHTML = ev.clientX;
 	reportEle[5].innerHTML = ev.clientY;
@@ -125,19 +152,93 @@ function createNode(posX = displayer.clientWidth/2 + 50, posY = displayer.client
 	node.appendChild(circle);
 	node.appendChild(text);
 
+
 	node.addEventListener("mousedown", dragElement);
 	node.addEventListener("click", selectNode);
 
-	console.log(node)
-
 	displayer.appendChild(node)
-
 	nodesEleList.push(node);
 }
 
-function createLine() {
+function joinNode() {
+	if (selectedNodes.length < 2) { // needs 2 nodes to be selected
+		joinWarning.classList.add("activate");
+		setTimeout(() => {
+			joinWarning.classList.remove("activate");
+		}, 3000);
+		return;
+	}
+
+	// .getBoundingClientRect()
+	// {x: 500, y: 400, width = height: 100, top = y = 400, left = x
+
+	let startNode = selectedNodes[0];
+	console.log("startNode: ", startNode)
+	let endNode = selectedNodes[1];
+	console.log("EndNode: ", endNode)
+
+	let startX = selectedNodes[0].getBoundingClientRect().x + 50;
+	let startY = selectedNodes[0].getBoundingClientRect().y + 50;
+	let endX = selectedNodes[1].getBoundingClientRect().x + 50;
+	let endY = selectedNodes[1].getBoundingClientRect().y + 50;
+
+	// Calculate len between nodes, will be rethought later
+	let lineLen = Math.floor((startX + startY + endX + endY)/40)
+
+	let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+	line.setAttribute("class", "line")
+	line.setAttribute("x1", startX)
+	line.setAttribute("y1", startY)
+	line.setAttribute("x2", endX)
+	line.setAttribute("y2", endY)
+	line.setAttribute("data-line-id", linesEleList.length)
+	line.setAttribute("data-line-len", lineLen)
+
+	let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+	text.textContent = "Line " + linesEleList.length + ": " + lineLen;
+	text.setAttribute("x", (startX + endX)/2);
+	text.setAttribute("y", (startY + endY)/2);
+	text.setAttribute("font-color", "#fff");
+	// text.setAttribute("text-anchor", "middle");
+	// text.setAttribute("alignment-baseline", "middle");
+
+	lineContainer.appendChild(line);
+	lineContainer.appendChild(text);
 	
+	linesEleList.push(line)
+
+	console.log(line)
+	console.log("join");
 }
+
+function unjoinNode() {
+	if (selectedNodes.length < 2) { // needs 2 nodes to be selected
+		unjoinWarning.classList.add("activate");
+		setTimeout(() => {
+			unjoinWarning.classList.remove("activate");
+		}, 3000);
+		return;
+	}
+
+	console.log("unjoin");
+}
+
+function updateNodeLinks(node1, node2) {
+	// Needs more time
+}
+
+function runDijsktra(startingNode) {
+
+}
+
+function runPrim(startingNode) {
+
+}
+
+
+function clearGraph() {
+
+} 
 
 {/* <svg class="node" width="100" height="100" style="top: 305px; left: 578px" data-node-id="Node Org" data-node-held="false">
 <circle r="100" cy="50" cx="50" id="3"></circle>
@@ -147,8 +248,54 @@ function createLine() {
 <circle r="50" cy="50" cx="50"></circle>
 </svg> */}
 
+// Prefilled data
+console.log(selectedNodes);
 
-createNode(500, 400);
+// 1
 createNode(200, 200);
-createNode(500, 200);
-createNode(300, 400);
+createNode(200, 400);
+createNode(250, 600);
+createNode(500, 300);
+
+//5
+createNode(600, 500);
+createNode(700, 200);
+
+
+selectedNodes.push(nodesEleList[0]);
+selectedNodes.push(nodesEleList[3]);
+joinNode();
+selectedNodes.pop();
+selectedNodes.push(nodesEleList[5]);
+joinNode();
+selectedNodes.pop();
+selectedNodes.pop();
+selectedNodes.push(nodesEleList[3]);
+selectedNodes.push(nodesEleList[1]);
+joinNode();
+selectedNodes.pop();
+selectedNodes.push(nodesEleList[2]);
+joinNode();
+selectedNodes.pop();
+selectedNodes.pop();
+selectedNodes.push(nodesEleList[4]);
+selectedNodes.push(nodesEleList[5]);
+joinNode();
+selectedNodes.pop();
+selectedNodes.push(nodesEleList[2]);
+joinNode();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -64,6 +64,7 @@ body {
 	padding: 12px;
 	background-color: rgb(135, 255, 211);
 	width: 80%;
+	cursor: pointer;
 }
 
 .displayer {
@@ -80,7 +81,9 @@ body {
 	position: absolute;
 	/* background-color: #e3feef; */
 }
-
+.node > text {
+	cursor: move;
+}
 .node > circle {
 	fill: coral;
 	cursor: move;
@@ -94,11 +97,33 @@ body {
 	fill: rgb(32, 55, 37);
 }
 
-.line {
+.line-container {
 	position: absolute;
+	/* background-color: cornflowerblue; */
+}
+
+.line-container > .line {
+	stroke: rgb(201, 201, 201);
+	stroke-width: 4;
+}
+
+.line-container > line.active {
+	stroke: rgb(112, 255, 124);
+	stroke-width: 4;
+}
+
+.line-container > text {
+	font-size: 20px;
+	font-weight: 800;
+	fill: #000000;
+	text-anchor: middle;
+	background-color: #000;
 }
 
 .node-table {
+	position: absolute;
+	background-color: rgb(238, 255, 176);
+
 	/* border: 1px solid #000; */
 }
 
@@ -129,10 +154,12 @@ body {
 	background-color: aliceblue;
 	box-shadow: 4px 4px 12px #000000;
 	padding: 20px;
+	display: none;
 }
 
 .warning.activate {
-	animation: fadeInOut ease-in-out 5000ms forwards;
+	display: block;
+	animation: fadeInOut ease-in-out 3000ms forwards;
 }
 
 @keyframes fadeInOut {

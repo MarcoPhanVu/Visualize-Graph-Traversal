@@ -45,13 +45,15 @@
 						<td class="report-temp">IDK</td>
 					</tr>
 					<tr>
-						<td class="report-temp">Ele Pos Y</td>
-						<td class="report-temp">Thing</td>
-						<td class="report-temp">IDK</td>
+						<td class="report-temp">Selected Node</td>
+						<td class="selectedNode">Thing</td>
+						<td class="selectedNode">IDK</td>
 					</tr>
 				</tbody>
 			</table>
-
+			<svg class="line-container" width="100%" height="100%">
+				<line x1="100" y1="100" x2="400" y2="400"/>
+			</svg>
 			<!-- <svg class="node" width="100" height="100" style="top: 200px; left: 200px;" data-node-id="Node Org" data-node-held="false">
 				Node 1
 				<circle r="50" cy="50" cx="50" id="node-org"></circle>
@@ -64,20 +66,48 @@
 				Node 1
 				<circle r="50" cy="50" cx="50"></circle>
 			</svg> -->
+
 		</div>
-		<div class="side-bar hidden">
+		<div class="side-bar">
 			<ul class="actions-tab">
-				<li><button class="action-btn">Create node</button></li>
-				<li><button class="action-btn">Delete node</button></li>
-				<li><button class="action-btn">Join</button></li>
-				<li><button class="action-btn">Unjoin</button></li>
-				<li><button class="action-btn">Run Dijsktra</button></li>
-				<li><button class="action-btn">Run Prim</button></li>
-				<li><button class="action-btn">Delete Graph</button></li>
+				<li>
+					<button class="action-btn" onclick="createNode()">Create node</button>
+				</li>
+				<li>
+					<button class="action-btn" onclick="deleteNode()">Delete node</button>
+				</li>
+				<li>
+					<button class="action-btn" onclick="joinNode()">Join</button>
+				</li>
+				<li>
+					<button class="action-btn" onclick="unjoinNode()">Unjoin</button>
+				</li>
+				<li>
+					<button class="action-btn" onclick="runDijsktra()">Run Dijsktra</button>
+				</li>
+				<li>
+					<button class="action-btn" onclick="runPrim()">Run Prim</button>
+				</li>
+				<li>
+					<button class="action-btn" onclick="clearGraph()">Delete Graph</button>
+				</li>
+				<button>những điều em luôn giấy</button>
 			</ul>
 		</div>
 	</div>
-	<div class="warning activate">
+	<div class="warning" id="joinNeed2N">
+		<h1 class="title">Warning</h1>
+		<p class="desc">Please select 2 nodes to join</p>
+	</div>
+	<div class="warning" id="unjoinNeed2N">
+		<h1 class="title">Warning</h1>
+		<p class="desc">Please select 2 nodes to unjoin</p>
+	</div>
+	<div class="warning" id="max2Nodes">
+		<h1 class="title">Warning</h1>
+		<p class="desc">Only 2 nodes can be selected at a time</p>
+	</div>
+	<div class="warning" id="">
 		<h1 class="title">Warning</h1>
 		<p class="desc">Warning Message</p>
 	</div>
