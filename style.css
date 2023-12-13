@@ -70,7 +70,7 @@ body {
 	position: relative;
 	flex: 10;
 	float: left;
-	background-color: rgb(117, 235, 180);
+	background-color: rgb(211, 254, 234);
 	height: 100%;
 	width: calc(100% - 240px);
 	border-radius: 16px;
@@ -78,14 +78,16 @@ body {
 
 .node {
 	position: absolute;
-
-	background-color: #e3feef;
+	/* background-color: #e3feef; */
 }
 
 .node > circle {
 	fill: coral;
 	cursor: move;
+}
 
+.node > circle.selected {
+	fill: rgb(255, 201, 250);
 }
 
 .node > rect {
@@ -120,4 +122,38 @@ body {
 
 }
 
+.warning {
+	position: fixed;
+	right: 20px;
+	top: 20px;
+	background-color: aliceblue;
+	box-shadow: 4px 4px 12px #000000;
+	padding: 20px;
+}
+
+.warning.activate {
+	animation: fadeInOut ease-in-out 5000ms forwards;
+}
+
+@keyframes fadeInOut {
+	from {
+		opacity: 0;
+	}
+
+	20% {
+		opacity: 0.9;
+	}
+
+	50% {
+		opacity: 1;
+	}
+
+	80% {
+		opacity: 0.9;
+	}
+
+	to {
+		opacity: 0;
+	}
+}
 
