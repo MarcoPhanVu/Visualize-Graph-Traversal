@@ -1,6 +1,9 @@
 // convert to array so that they can be manipulate later
 const nodesEleList = Array.from(document.querySelectorAll(".node")); // NODES will be SVG
-const linesEleList = Array.from(document.querySelectorAll(".line"));
+let linesEleListArray = Array.from(document.querySelectorAll(".line"));
+
+const linesEleListNodes = document.querySelectorAll(".line");
+
 const lineContainer = document.querySelector(".line-container")
 
 const reportEle = document.querySelectorAll(".report-temp");
@@ -9,12 +12,14 @@ const selectedNodeRecord = document.querySelectorAll(".selectedNode");
 const joinWarning = document.getElementById("joinNeed2N");
 const unjoinWarning = document.getElementById("unjoinNeed2N");
 const maxNodesWarning = document.getElementById("max2Nodes");
+const connectionExistedWarning = document.getElementById("connectionExisted");
 
 let nOrg = nodesEleList[0];
-let lOrg = linesEleList[0];
+let lOrg = linesEleListArray[0];
 
 let selectedNodes = [];
 
+let connections = [];
 
 function dragElement(ev) {
 	ev.preventDefault();
@@ -48,12 +53,12 @@ function dragElement(ev) {
 	function moveEle(ev) {
 		ev.preventDefault();
 
-		console.log(ev)
-
 		nodeSVG.style.top = (ev.clientY - offsetY) + "px";
 		nodeSVG.style.left = (ev.clientX - offsetX) + "px";
 
 		ev.target.parentElement.dataset.nodeHeld = "true";
+		drawLines();
+
 	}
 
 	function stopDrag(ev) {
@@ -166,49 +171,119 @@ function joinNode() {
 		setTimeout(() => {
 			joinWarning.classList.remove("activate");
 		}, 3000);
+
 		return;
 	}
 
 	// .getBoundingClientRect()
-	// {x: 500, y: 400, width = height: 100, top = y = 400, left = x
+	// x: 500, y: 400, width = height: 100, top = y = 400, left = x
 
-	let startNode = selectedNodes[0];
-	console.log("startNode: ", startNode)
-	let endNode = selectedNodes[1];
-	console.log("EndNode: ", endNode)
-
-	let startX = selectedNodes[0].getBoundingClientRect().x + 50;
-	let startY = selectedNodes[0].getBoundingClientRect().y + 50;
-	let endX = selectedNodes[1].getBoundingClientRect().x + 50;
-	let endY = selectedNodes[1].getBoundingClientRect().y + 50;
-
-	// Calculate len between nodes, will be rethought later
-	let lineLen = Math.floor((startX + startY + endX + endY)/40)
-
-	let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-	line.setAttribute("class", "line")
-	line.setAttribute("x1", startX)
-	line.setAttribute("y1", startY)
-	line.setAttribute("x2", endX)
-	line.setAttribute("y2", endY)
-	line.setAttribute("data-line-id", linesEleList.length)
-	line.setAttribute("data-line-len", lineLen)
-
-	let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-	text.textContent = "Line " + linesEleList.length + ": " + lineLen;
-	text.setAttribute("x", (startX + endX)/2);
-	text.setAttribute("y", (startY + endY)/2);
-	text.setAttribute("font-color", "#fff");
-	// text.setAttribute("text-anchor", "middle");
-	// text.setAttribute("alignment-baseline", "middle");
-
-	lineContainer.appendChild(line);
-	lineContainer.appendChild(text);
+	// if (true) {
+	// 	let startNode = selectedNodes[0];
+	// 	console.log("startNode: ", startNode)
+	// 	let endNode = selectedNodes[1];
+	// 	console.log("EndNode: ", endNode)
 	
-	linesEleList.push(line)
+	// 	let startX = selectedNodes[0].getBoundingClientRect().x + 50;
+	// 	let startY = selectedNodes[0].getBoundingClientRect().y + 50;
+	// 	let endX = selectedNodes[1].getBoundingClientRect().x + 50;
+	// 	let endY = selectedNodes[1].getBoundingClientRect().y + 50;
+	
+	// 	// Calculate len between nodes, will be rethought later
+	// 	let lineLen = Math.floor((startX + startY + endX + endY)/40)
+	
+	// 	let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+	// 	line.setAttribute("class", "line")
+	// 	line.setAttribute("x1", startX)
+	// 	line.setAttribute("y1", startY)
+	// 	line.setAttribute("x2", endX)
+	// 	line.setAttribute("y2", endY)
+	// 	line.setAttribute("data-line-id", linesEleListArray.length)
+	// 	line.setAttribute("data-line-len", lineLen)
+	
+	// 	let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+	// 	text.textContent = "Line " + linesEleListArray.length + ": " + lineLen;
+	// 	text.setAttribute("x", (startX + endX)/2);
+	// 	text.setAttribute("y", (startY + endY)/2);
+	// 	text.setAttribute("font-color", "#fff");
+	// 	// text.setAttribute("text-anchor", "middle");
+	// 	// text.setAttribute("alignment-baseline", "middle");
+	
+	// 	lineContainer.appendChild(line);
+	// 	lineContainer.appendChild(text);
+		
+	// 	linesEleListArray.push(line)
+	// }
 
-	console.log(line)
-	console.log("join");
+	// if(fixedLen) {
+	// 	let startNode = selectedNodes[0];
+	// 	let endNode = selectedNodes[1];
+	// 	let startX = startNode.getBoundingClientRect().x + 50;
+	// 	let startY = startNode.getBoundingClientRect().y + 50;
+	// 	let endX = endNode.getBoundingClientRect().x + 50;
+	// 	let endY = endNode.getBoundingClientRect().y + 50;
+	
+	// 	// Calculate len between nodes, will be rethought of later
+	// 	let lineLen = Math.floor(
+	// 		Math.sqrt((startX - endX)**2 + (startY - endY)**2)
+	// 	)
+	// }
+
+	let newConnection = {
+		startNode: selectedNodes[0],
+		endNode: selectedNodes[1],
+		weight: 100
+	}
+
+	if (connectionExisted(newConnection)) {
+		return;
+	}
+
+	connections.push(newConnection);
+
+	drawLines();
+}
+
+function drawLines() {
+	linesEleListArray = [];
+	removeAllChilds(lineContainer);
+	
+	for (let i = 0; i < connections.length; i++) {
+		let startNode = connections[i].startNode;
+		let endNode = connections[i].endNode;
+		let lineLen = connections[i].weight;
+		let startX = startNode.getBoundingClientRect().x + 50;
+		let startY = startNode.getBoundingClientRect().y + 50;
+		let endX = endNode.getBoundingClientRect().x + 50;
+		let endY = endNode.getBoundingClientRect().y + 50;
+
+		lineLen = Math.floor(
+			Math.sqrt((startX - endX)**2 + (startY - endY)**2) / 20
+		)
+	
+		let line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+		line.setAttribute("class", "line")
+		line.setAttribute("x1", startX)
+		line.setAttribute("y1", startY)
+		line.setAttribute("x2", endX)
+		line.setAttribute("y2", endY)
+		line.setAttribute("data-line-id", linesEleListArray.length)
+		line.setAttribute("data-line-len", lineLen)
+	
+		let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+		text.textContent = "Line " + linesEleListArray.length + ": " + lineLen;
+		text.setAttribute("x", (startX + endX)/2);
+		text.setAttribute("y", (startY + endY)/2);
+		text.setAttribute("font-color", "#fff");
+		// text.setAttribute("text-anchor", "middle");
+		// text.setAttribute("alignment-baseline", "middle");
+	
+		lineContainer.appendChild(line);
+		lineContainer.appendChild(text);
+		
+		linesEleListArray.push(line)
+	}
+
 }
 
 function unjoinNode() {
@@ -248,6 +323,25 @@ function clearGraph() {
 <circle r="50" cy="50" cx="50"></circle>
 </svg> */}
 
+function connectionExisted(connection, action="none") {
+    for (let i = 0; i < connections.length; i++) {
+        if (connections[i].startNode == connection.startNode && connections[i].endNode == connection.endNode) {
+			console.log("Yes, connectionExisted at index: ", i);
+			connectionExistedWarning.classList.add("activate");
+			setTimeout(() => {
+				connectionExistedWarning.classList.remove("activate");
+			}, 3000);
+		
+			if (action == "getIndex") {
+				return i;
+			}
+			return true;
+		}
+    }
+	console.log("no");
+    return false;
+}
+
 // Prefilled data
 console.log(selectedNodes);
 
@@ -284,6 +378,20 @@ joinNode();
 selectedNodes.pop();
 selectedNodes.push(nodesEleList[2]);
 joinNode();
+selectedNodes.pop();
+selectedNodes.push(nodesEleList[2]);
+joinNode();
+selectedNodes.pop();
+selectedNodes.push(nodesEleList[2]);
+joinNode();
+selectedNodes.pop();
+selectedNodes.push(nodesEleList[2]);
+joinNode();
+selectedNodes.pop();
+selectedNodes.push(nodesEleList[2]);
+joinNode();
+selectedNodes.pop();
+selectedNodes.pop();
 
 
 

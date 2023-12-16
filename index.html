@@ -16,7 +16,7 @@
 	<div class="main-container">
 		<div class="displayer" id="displayer">
 			<table class="node-table">
-				<thead class="node-list">
+				<thead class="node-list-table">
 					<tr>
 						<td>Ele</td>
 						<td>PosX</td>
@@ -91,26 +91,28 @@
 				<li>
 					<button class="action-btn" onclick="clearGraph()">Delete Graph</button>
 				</li>
-				<button>những điều em luôn giấy</button>
 			</ul>
 		</div>
 	</div>
 	<div class="warning" id="joinNeed2N">
 		<h1 class="title">Warning</h1>
-		<p class="desc">Please select 2 nodes to join</p>
+		<p class="desc">Please select 2 nodes to join.</p>
 	</div>
 	<div class="warning" id="unjoinNeed2N">
 		<h1 class="title">Warning</h1>
-		<p class="desc">Please select 2 nodes to unjoin</p>
+		<p class="desc">Please select 2 nodes to unjoin.</p>
 	</div>
 	<div class="warning" id="max2Nodes">
 		<h1 class="title">Warning</h1>
-		<p class="desc">Only 2 nodes can be selected at a time</p>
+		<p class="desc">Only 2 nodes can be selected at a time.</p>
 	</div>
-	<div class="warning" id="">
+	<div class="warning" id="connectionExisted">
 		<h1 class="title">Warning</h1>
-		<p class="desc">Warning Message</p>
+		<p class="desc">These 2 nodes have been joined at that direction.</p>
 	</div>
-	<script src="./script.js"></script>
+	<script src="./scripts/basicFuncs.js"></script>
+	<script src="./scripts/script.js"></script>
+	<script src="./scripts/algorithm.js"></script>
+	<script src="./scripts/algorithms/prim.js"></script>
 </body> 
 </html>
