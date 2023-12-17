@@ -53,7 +53,6 @@ function dragElement(ev) {
 
 		ev.target.parentElement.dataset.nodeHeld = "true";
 		drawLines();
-
 	}
 
 	function stopDrag(ev) {
@@ -103,6 +102,7 @@ function updateSelectedNodes(node, action="add") {
 			return;
 		}
 
+        getRelatedConnections(node);
 		selectedNodes.push(node);
 	}
 
@@ -112,6 +112,7 @@ function updateSelectedNodes(node, action="add") {
 			return;
 		}
 
+        getRelatedConnections(node, "hide");
 		selectedNodes.splice(selectedNodes.indexOf(node), 1); // 1 = remove 1 only
 	}
 }
@@ -196,13 +197,17 @@ function joinNode() {
 	connections.push(newConnection);
 
 	drawLines();
+    getRelatedConnections(startNode);
+    getRelatedConnections(endNode);
+
 }
 
-function drawLines() {
+function drawLines(selectedLines=false) {
 	linesEleListArray = [];
 	removeAllChilds(lineContainer);
-	
+
 	for (let i = 0; i < connections.length; i++) {
+
 		let startNode = connections[i].startNode;
 		let endNode = connections[i].endNode;
 		let lineLen = connections[i].weight;
@@ -219,6 +224,8 @@ function drawLines() {
 		line.setAttribute("y2", endY)
 		line.setAttribute("data-line-id", linesEleListArray.length)
 		line.setAttribute("data-line-len", lineLen)
+		line.setAttribute("data-startNode", startNode.dataset.nodeId)
+		line.setAttribute("data-endNode", endNode.dataset.nodeId)
 	
 		let text = document.createElementNS("http://www.w3.org/2000/svg", "text");
 		text.textContent = "Line " + linesEleListArray.length + ": " + lineLen;
@@ -275,18 +282,85 @@ function clearGraph() {
 
 function connectionExisted(connection, action="none") {
     for (let i = 0; i < connections.length; i++) {
-        if (connections[i].startNode == connection.startNode && connections[i].endNode == connection.endNode || connections[i].startNode == connection.endNode && connections[i].endNode == connection.startNode) {
+
+		let sameStartingNode = (connections[i].startNode == connection.startNode);
+		let sameEndingNode = (connections[i].endNode == connection.endNode);
+		let sameStartAsEndNode = (connections[i].startNode == connection.endNode);
+		let sameEndAsStartNode = (connections[i].endNode == connection.startNode);
+
+		let sameStartingNodeId = (connections[i].startNode.dataset.nodeId == connection.startNode);
+		let sameEndingNodeId = (connections[i].endNode.dataset.nodeId == connection.endNode);
+		let sameStartAsEndNodeId = (connections[i].startNode.dataset.nodeId == connection.endNode);
+		let sameEndAsStartNodeId = (connections[i].endNode.dataset.nodeId == connection.startNode);
+
+        if (
+            (
+                (sameStartingNode && sameEndingNode) || (sameStartAsEndNode && sameEndAsStartNode)
+            ) || (
+				(sameStartingNodeId && sameEndingNodeId) || (sameStartAsEndNodeId && sameEndAsStartNodeId)
+            )) {
+			if (action == "getIndex") {
+				return i;
+			}
+
 			// console.log("Yes, connectionExisted at index: ", i);
 			connectionExistedWarning.classList.add("activate");
 			setTimeout(() => {
 				connectionExistedWarning.classList.remove("activate");
 			}, 3000);
 		
-			if (action == "getIndex") {
-				return i;
-			}
-			return true;
+
+            console.log("Existed");
+			return connections[i];
 		}
     }
     return false;
+}
+
+function getRelatedConnections(node, action="show") {
+    let nodeId = node.dataset.nodeId;
+    let allRelatedLines0 = document.querySelectorAll(`[data-startNode="${nodeId}"]`);
+    let allRelatedLines1 = document.querySelectorAll(`[data-endNode="${nodeId}"]`);
+
+    if (action == "show") {
+        allRelatedLines0.forEach(element => {
+            element.classList.add("selected");
+        });
+    
+        allRelatedLines1.forEach(element => {
+            element.classList.add("selected");
+        });
+    }
+    
+    if (action == "hide") {
+        allRelatedLines0.forEach(element => {
+            element.classList.remove("selected");
+        });
+    
+        allRelatedLines1.forEach(element => {
+            element.classList.remove("selected");
+        });
+    }
+}
+
+function highlight(ele, state=true) {
+    if (state == "chosen") {
+        ele.classList.add("chosen");
+
+	}
+
+	if (state == "notchosen") {
+        ele.classList.remove("chosen");
+	}
+
+    if (state == true) {
+        ele.classList.add("active");
+    } else {
+        ele.classList.remove("active");
+        console.log("removed");
+    }
+}
+
+function getNode(id) {
+    return nodesEleList[id];
 }

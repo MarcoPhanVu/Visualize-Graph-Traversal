@@ -85,16 +85,21 @@ body {
 	cursor: move;
 }
 .node > circle {
-	fill: coral;
+	fill: rgb(255, 160, 125);
 	cursor: move;
 }
 
 .node > circle.selected {
-	fill: rgb(255, 201, 250);
+	fill: rgb(139, 255, 129);
+
 }
 
 .node > rect {
 	fill: rgb(32, 55, 37);
+}
+
+.node.active > circle {
+	fill: rgb(255, 201, 250);
 }
 
 .line-container {
@@ -107,8 +112,18 @@ body {
 	stroke-width: 4;
 }
 
-.line-container > line.active {
+.line-container > line.selected {
 	stroke: rgb(112, 255, 124);
+	stroke-width: 4;
+}
+
+.line-container > line.active {
+	stroke: rgb(112, 138, 255);
+	stroke-width: 5;
+}
+
+.line-container > line.chosen {
+	stroke: rgb(255, 112, 112);
 	stroke-width: 4;
 }
 

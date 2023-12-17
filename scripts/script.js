@@ -37,3 +37,4 @@ selectedNodes.push(nodesEleList[5]);
 joinNode();
 selectedNodes.pop();
 selectedNodes.pop();
+drawLines();

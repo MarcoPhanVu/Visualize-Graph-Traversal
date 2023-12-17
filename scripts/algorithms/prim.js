@@ -1,15 +1,23 @@
-// console.log("fuck")
+let lala = {startNode: '0', endNode: '3', weight: 15};
 
-let lala = {startNode: nodesEleList[5],
-    endNode: nodesEleList[4],
-    weight: 100}
+console.log("THIS IS LALA: ", connectionExisted(lala));
 
-// if (lala == connections[4]) {
-//     console.log("hey")
-// }
-
-// connectionExisted(lala)
 let graph = []
+
+let actions = [
+    // {
+    //     target: null,
+    //     action: null
+    // }
+]
+
+function setActions(target, action) {
+    actions.push({
+        target: target,
+        action: action
+    })
+    // console.log(actions);
+}
 
 function convertToGraph() {
     graph = []
@@ -38,11 +46,13 @@ function convertToGraph() {
     console.log(graph)
 }
 
-function runDijsktra(startingPoint) {
+function runDijsktra(startingPoint=nodesEleList[0]) {
 
 }
 
-function runPrim(startingPoint) {
+function runPrim(startingPoint=nodesEleList[0]) {
+    convertToGraph();
+    let startingNode = startingPoint;
     startingPoint = startingPoint.dataset.nodeId;
     
     let vertexCount = nodesEleList.length;
@@ -55,15 +65,20 @@ function runPrim(startingPoint) {
     }
     visitedNodes[startingPoint] = 1;
 
-    console.log("VN: ", visitedNodes)
-
     while (notYetChecked < vertexCount - 1) {
         minWeight = 10000;
-        xP = 0;
-        yP = 0;
 
         for (let i = 0; i < vertexCount; i++) {
-            if (visitedNodes[i] == 1) {
+            if (visitedNodes[i] == 1) {                
+                // setTimeout(() => { // Highlight current selected node
+                //     highlight(getNode(i));
+                //     setTimeout(() => {
+                //         highlight(getNode(i), false);
+                //     }, 500);
+                // }, 500);
+
+                setActions(getNode(i), "highlight")
+
                 for (let j = 0; j < vertexCount; j++) {
                     if (visitedNodes[j] == 0 && graph[i][j] != 0) { // j node haven't been visited and have connections to i node
                         if (graph[i][j] <= minWeight) {
@@ -77,14 +92,18 @@ function runPrim(startingPoint) {
                     }
                 }
             }
+
+            console.log("say hehehe");
         }
 
         visitedEdges.push(minEdge);
+
+        // console.log("IND: ", connectionExisted(minEdge, "getIndex"))
+        highlight(linesEleListArray[connectionExisted(minEdge, "getIndex")], "chosen");
+
         visitedNodes[minEdge.endNode] = 1;
         notYetChecked++;
     }
-
-    console.log("VN: ", visitedEdges)
 
     for (let i = 0; i < visitedEdges.length; i++) {
         console.log(visitedEdges[i].startNode, " connected to ", visitedEdges[i].endNode);
@@ -93,3 +112,5 @@ function runPrim(startingPoint) {
 
 convertToGraph();
 runPrim(nodesEleList[0]);
+
+
