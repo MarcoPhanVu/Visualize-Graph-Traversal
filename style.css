@@ -43,10 +43,13 @@ body {
 	width: 240px;
 	border: 1px solid #000;
 	height: calc(100vh - 136px);
+	z-index: 20;
+	height: 100vh;
+
 }
 
 .actions-tab {
-	background-color: rgb(255, 249, 191);
+	background-color: #e7fffd;
 	padding: 24px;
 	display: flex;
 	flex-direction: column;
@@ -54,17 +57,44 @@ body {
 	height: 100%;
 }
 
-
 .actions-tab > li {
-	background-color: rgb(189, 237, 255);
+	/* background-color: rgb(189, 237, 255); */
 	text-align: center;
 }
 
 .actions-tab > li > .action-btn {
 	padding: 12px;
 	background-color: rgb(135, 255, 211);
+	font-size: 20px;
 	width: 80%;
 	cursor: pointer;
+}
+
+
+#logs {
+	background-color: aliceblue;
+	position: fixed;
+	width: 16%;
+	height: 40%;
+	display: flex;
+	text-align: center;
+	flex-direction: column;
+	padding: 12px;
+	overflow-y: scroll;
+}
+
+#logs > h2 {
+	position: fixed;
+	padding: 12px;
+	background-color: rgb(184, 255, 188);
+	top: 0px;
+	left: 0px;
+	width: calc(16% - 16px);
+}
+
+#logs > p.actionTook.chosen {
+	background-color: rgb(255, 158, 68);
+	padding: 6px 2px;
 }
 
 .displayer {
@@ -74,7 +104,8 @@ body {
 	background-color: rgb(211, 254, 234);
 	height: 100%;
 	width: calc(100% - 240px);
-	border-radius: 16px;
+	/* border-radius: 16px; */
+	z-index: 5;
 }
 
 .node {
@@ -123,7 +154,7 @@ body {
 }
 
 .line-container > line.chosen {
-	stroke: rgb(255, 112, 112);
+	stroke: rgb(255, 112, 112) !important;
 	stroke-width: 4;
 }
 

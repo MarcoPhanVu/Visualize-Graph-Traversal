@@ -4,8 +4,8 @@ let linesEleListArray = Array.from(document.querySelectorAll(".line"));
 
 const lineContainer = document.querySelector(".line-container")
 
-const reportEle = document.querySelectorAll(".report-temp");
-const selectedNodeRecord = document.querySelectorAll(".selectedNode");
+// const reportEle = document.querySelectorAll(".report-temp");
+const logPanel = document.getElementById("logs")
 
 const joinWarning = document.getElementById("joinNeed2N");
 const unjoinWarning = document.getElementById("unjoinNeed2N");
@@ -28,10 +28,10 @@ function dragElement(ev) {
 
 	if (nodeSVG.tagName == "svg") { // Make sure that we selected the node
 		ev.onmousedown = initDrag(ev);
-		reportEle[1].innerHTML = nodeSVG.dataset.nodeId;
+		// reportEle[1].innerHTML = nodeSVG.dataset.nodeId;
 
-		reportEle[10].innerHTML = nodeSVG.style.left;
-		reportEle[11].innerHTML = nodeSVG.style.top;
+		// reportEle[10].innerHTML = nodeSVG.style.left;
+		// reportEle[11].innerHTML = nodeSVG.style.top;
 	}
 
 	function initDrag(ev) {
@@ -121,8 +121,8 @@ const displayer = document.getElementById("displayer");
 
 displayer.addEventListener("mousemove", updateMouseLoc);
 function updateMouseLoc(ev) {
-	reportEle[4].innerHTML = ev.clientX;
-	reportEle[5].innerHTML = ev.clientY;
+	// reportEle[4].innerHTML = ev.clientX;
+	// reportEle[5].innerHTML = ev.clientY;
 }
 
 function createNode(posX = displayer.clientWidth/2 + 50, posY = displayer.clientHeight/2 + 50) {
@@ -345,22 +345,38 @@ function getRelatedConnections(node, action="show") {
 
 function highlight(ele, state=true) {
     if (state == "chosen") {
+        ele.classList.remove("active");
+        ele.classList.remove("selected");
         ele.classList.add("chosen");
-
 	}
 
 	if (state == "notchosen") {
+        ele.classList.remove("active");
         ele.classList.remove("chosen");
 	}
 
     if (state == true) {
         ele.classList.add("active");
-    } else {
+    } 
+	
+	if (state == "remove") {
         ele.classList.remove("active");
-        console.log("removed");
+        console.log("removing highlight");
     }
 }
 
 function getNode(id) {
     return nodesEleList[id];
+}
+
+function logAction(msg, act="") {
+	let log = document.createElement("p");
+	log.setAttribute("class", "actionTook");
+	if (act == "chosen") {
+		log.setAttribute("class", "actionTook chosen");
+	}
+	log.innerHTML = msg;
+
+	logPanel.appendChild(log);
+	logPanel.scrollTop = logPanel.scrollHeight;
 }

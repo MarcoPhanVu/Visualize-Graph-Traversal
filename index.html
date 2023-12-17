@@ -15,7 +15,12 @@
 	</header>
 	<div class="main-container">
 		<div class="displayer" id="displayer">
-			<table class="node-table">
+			<div id="logs">
+				<h2>Actions Log</h2>
+				<p>hehe</p>
+				<p>hehe</p>
+			</div>
+			<!-- <table class="node-table">
 				<thead class="node-list-table">
 					<tr>
 						<td>Ele</td>
@@ -50,7 +55,7 @@
 						<td class="selectedNode">IDK</td>
 					</tr>
 				</tbody>
-			</table>
+			</table> -->
 			<svg class="line-container" width="100%" height="100%">
 				<line x1="100" y1="100" x2="400" y2="400"/>
 			</svg>
@@ -83,7 +88,7 @@
 					<button class="action-btn" onclick="unjoinNode()">Unjoin</button>
 				</li>
 				<li>
-					<button class="action-btn" onclick="runDijsktra()">Run Dijsktra</button>
+					<button class="action-btn" onclick="runDijkstra()">Run Dijsktra</button>
 				</li>
 				<li>
 					<button class="action-btn" onclick="runPrim()">Run Prim</button>
@@ -113,7 +118,6 @@
 
 	<script src="./scripts/basicFuncs.js"></script>
 	<script src="./scripts/displayAll.js"></script>
-	<script src="./scripts/algorithm.js"></script>
 	<script src="./scripts/script.js"></script>
 	<script src="./scripts/algorithms/prim.js"></script>
 
