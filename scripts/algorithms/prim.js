@@ -1,6 +1,8 @@
-let lala = {startNode: '0', endNode: '3', weight: 15};
+// let lala = {startNode: '0', endNode: '3', weight: 15};
 
-console.log("THIS IS LALA: ", connectionExisted(lala));
+// console.log("THIS IS LALA: ", connectionExisted(lala));
+
+delay = 600;
 
 let graph = []
 
@@ -42,8 +44,6 @@ function convertToGraph() {
                 Number(connections[i].startNode.dataset.nodeId)
             ] = connections[i].weight
     }
-
-    console.log(graph)
 }
 
 function runDijsktra(startingPoint=nodesEleList[0]) {
@@ -70,14 +70,7 @@ function runPrim(startingPoint=nodesEleList[0]) {
 
         for (let i = 0; i < vertexCount; i++) {
             if (visitedNodes[i] == 1) {                
-                // setTimeout(() => { // Highlight current selected node
-                //     highlight(getNode(i));
-                //     setTimeout(() => {
-                //         highlight(getNode(i), false);
-                //     }, 500);
-                // }, 500);
-
-                setActions(getNode(i), "highlight")
+                setActions(getNode(i), "highlightNode")
 
                 for (let j = 0; j < vertexCount; j++) {
                     if (visitedNodes[j] == 0 && graph[i][j] != 0) { // j node haven't been visited and have connections to i node
@@ -89,19 +82,21 @@ function runPrim(startingPoint=nodesEleList[0]) {
                                 weight: graph[i][j]
                             };
                         }
+                        setActions(linesEleListArray[connectionExisted(minEdge, "getIndex")], "highlight");   
                     }
                 }
             }
-
-            console.log("say hehehe");
         }
 
         visitedEdges.push(minEdge);
 
-        // console.log("IND: ", connectionExisted(minEdge, "getIndex"))
+        setActions(linesEleListArray[connectionExisted(minEdge, "getIndex")], "choosen");
+
         highlight(linesEleListArray[connectionExisted(minEdge, "getIndex")], "chosen");
 
         visitedNodes[minEdge.endNode] = 1;
+        setActions(linesEleListArray[connectionExisted(minEdge, "getIndex")], "nodeVisited");
+        
         notYetChecked++;
     }
 
@@ -110,7 +105,70 @@ function runPrim(startingPoint=nodesEleList[0]) {
     }
 }
 
+function startActions() {
+    console.log("this is actions: ", actions);
+
+    for (let i = 0; i < actions.length; i++) {
+        if (actions[i].action == "highlightNode") {
+            getRelatedConnections(actions[i].target);
+        }
+
+    }
+}
+
+function highLightNode(ele) {
+    var d = $.Deferred();
+    // some very time consuming asynchronous code...
+    setTimeout(function() {
+        // highlight(ele, true);
+        d.resolve();
+    }, 500);
+
+    console.log(d.promise());
+
+    return d.promise();
+}
+
+function firstFunction(){
+    var d = $.Deferred();
+    // some very time consuming asynchronous code...
+    setTimeout(function() {
+        console.log('1');
+        d.resolve();
+    }, 500);
+    return d.promise();
+}
+function thirdFunction(){
+    var d = $.Deferred();
+    // definitely dont wanna do this until secondFunction is finished
+    setTimeout(function() {
+        console.log('3');
+        d.resolve();
+    }, 500);
+    return d.promise();
+}
+function secondFunction(){
+    var d = $.Deferred();
+    setTimeout(function() {
+        console.log('2');
+        d.resolve();
+    }, 500);
+    return d.promise();
+}
+function fourthFunction(){
+    var d = $.Deferred();
+    // last function, not executed until the other 3 are done.
+    setTimeout(function() {
+        console.log('4');
+        d.resolve();
+    }, 500);
+    return d.promise();
+}
+    
+    firstFunction().pipe(highLightNode).pipe(secondFunction).pipe(thirdFunction).pipe(fourthFunction);
+
 convertToGraph();
 runPrim(nodesEleList[0]);
+startActions();
 
 
