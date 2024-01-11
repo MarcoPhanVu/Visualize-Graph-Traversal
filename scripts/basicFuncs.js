@@ -14,3 +14,9 @@ function removeAllChilds(ele) {
         ele.removeChild(ele.firstChild);
     }
 }
+
+function clearAllEle(list) {
+    for (i = 0; i < list.length; i++) {
+        list.pop();
+    }
+}

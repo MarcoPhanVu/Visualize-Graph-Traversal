@@ -66,6 +66,7 @@ function runDijkstra(startingPoint=nodesEleList[0]) {
 }
 
 function runPrim(startingPoint=nodesEleList[0]) {
+	clearAllEle(actions);
     convertToGraph();
     let startingNode = startingPoint;
     startingPoint = startingPoint.dataset.nodeId;
@@ -110,6 +111,7 @@ function runPrim(startingPoint=nodesEleList[0]) {
         // highlight(linesEleListArray[connectionExisted(minEdge, "getIndex")], "chosen");
 
         visitedNodes[minEdge.endNode] = 1;
+        
         setActions(linesEleListArray[connectionExisted(minEdge, "getIndex")], "nodeVisited");
         
         notYetChecked++;
@@ -122,19 +124,13 @@ function runPrim(startingPoint=nodesEleList[0]) {
     performAction(0);
 }
 
-// function startActions() {
-//     console.log("this is actions: ", actions);
-
-//     for (let i = 0; i < actions.length; i++) {
-//         if (actions[i].action == "highlightNode") {
-//             getRelatedConnections(actions[i].target);
-//         }
-
-//     }
-// }
-
 
 function performAction(index) {
+    if (graphEmptied == true) {
+        logAction(`Graph Cleared`);
+        logAction(`Algorithm stopped.`);
+        return;
+    }
     if (index < actions.length) {
         console.log("currently executing: ", index);
         if (actions[index].action == "highlightNode") {
@@ -153,7 +149,6 @@ function performAction(index) {
             console.log("chosen", actions[index].target)
             highlight(actions[index].target, "chosen");
             logAction(`Chosen Line [${actions[index].target.dataset.lineId}]`);
-
         }
 
         index++;
@@ -162,67 +157,15 @@ function performAction(index) {
             performAction(index);
         }, delay);
     } else {
-        logAction(`Prim Alorithm Finished Successfully!`);
+        logAction(`Algorithm Finished Successfully!`);
     }
-
 }
 
-// function highLightNode(ele) {
-//     var d = $.Deferred();
-//     // some very time consuming asynchronous code...
-//     setTimeout(function() {
-//         // highlight(ele, true);git st
-//         d.resolve();
-//     }, 500);
-
-//     console.log(d.promise());
-
-//     return d.promise();
-// }
-
-// function firstFunction(){
-//     var d = $.Deferred();
-//     // some very time consuming asynchronous code...
-//     setTimeout(function() {
-//         console.log('1');
-//         d.resolve();
-//     }, 500);
-//     return d.promise();
-// }
-// function thirdFunction(){
-//     var d = $.Deferred();
-//     // definitely dont wanna do this until secondFunction is finished
-//     setTimeout(function() {
-//         console.log('3');
-//         d.resolve();
-//     }, 500);
-//     return d.promise();
-// }
-// function secondFunction(){
-//     var d = $.Deferred();
-//     setTimeout(function() {
-//         console.log('2');
-//         d.resolve();
-//     }, 500);
-//     return d.promise();
-// }
-// function fourthFunction(){
-//     var d = $.Deferred();
-//     // last function, not executed until the other 3 are done.
-//     setTimeout(function() {
-//         console.log('4');
-//         d.resolve();
-//     }, 500);
-//     return d.promise();
-// }
-    
-// firstFunction().pipe(highLightNode).pipe(secondFunction).pipe(thirdFunction).pipe(fourthFunction);
-
 convertToGraph();
-// runPrim(nodesEleList[0]);
-// startActions();
 
 console.log("this is actions: ", actions);
+
+// clearGraph();
 
 
 

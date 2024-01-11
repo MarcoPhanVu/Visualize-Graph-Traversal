@@ -6,6 +6,7 @@ const lineContainer = document.querySelector(".line-container")
 
 // const reportEle = document.querySelectorAll(".report-temp");
 const logPanel = document.getElementById("logs")
+const weightIndicator = document.getElementById("weight");
 
 const joinWarning = document.getElementById("joinNeed2N");
 const unjoinWarning = document.getElementById("unjoinNeed2N");
@@ -15,6 +16,8 @@ const connectionExistedWarning = document.getElementById("connectionExisted");
 let selectedNodes = [];
 
 let connections = [];
+
+let graphEmptied = false;
 
 function dragElement(ev) {
 	ev.preventDefault();
@@ -269,8 +272,28 @@ function runPrim(startingNode) {
 
 
 function clearGraph() {
+	graphEmptied = true;
+	removeAllChilds(lineContainer);
+	removeAllChilds(logPanel);
+	// clearAllEle(linesEleListArray);
+	clearAllEle(selectedNodes);
+	clearAllEle(actions);
+	clearAllEle(connections);
+	let nodesCount = nodesEleList.length;
+	for (let i = 0; i < nodesCount; i++) {
+		nodesEleList[0].parentElement.removeChild(nodesEleList[0]);
+		nodesEleList.shift();
+	}
 
+	let connectionsCount = connections.length;
+	for (let i = 0; i < connectionsCount; i++) {
+		linesEleListArray[0].parentElement.removeChild(linesEleListArray[0]);
+		linesEleListArray.shift();
+		console.log(i)
+	}
 } 
+
+
 
 {/* <svg class="node" width="100" height="100" style="top: 305px; left: 578px" data-node-id="Node Org" data-node-held="false">
 <circle r="100" cy="50" cx="50" id="3"></circle>
@@ -379,4 +402,13 @@ function logAction(msg, act="") {
 
 	logPanel.appendChild(log);
 	logPanel.scrollTop = logPanel.scrollHeight;
+}
+
+function runPrimBtn() {
+	if (weightIndicator.value == "") {
+		runPrim();
+		return;
+	}
+
+	runPrim(nodesEleList[Number(weightIndicator.value)])
 }

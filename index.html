@@ -15,8 +15,8 @@
 	</header>
 	<div class="main-container">
 		<div class="displayer" id="displayer">
+			<h2 class="actions-log-title">Actions Log</h2>
 			<div id="logs">
-				<h2>Actions Log</h2>
 				<p>hehe</p>
 				<p>hehe</p>
 			</div>
@@ -78,23 +78,24 @@
 				<li>
 					<button class="action-btn" onclick="createNode()">Create node</button>
 				</li>
-				<li>
+				<!-- <li>
 					<button class="action-btn" onclick="deleteNode()">Delete node</button>
-				</li>
+				</li> -->
 				<li>
 					<button class="action-btn" onclick="joinNode()">Join</button>
+					<input type="text" id="weight">
 				</li>
-				<li>
+				<!-- <li>
 					<button class="action-btn" onclick="unjoinNode()">Unjoin</button>
+				</li> -->
+				<li>
+					<button class="action-btn" onclick="runDijkstra()">Run Dijkstra</button>
 				</li>
 				<li>
-					<button class="action-btn" onclick="runDijkstra()">Run Dijsktra</button>
+					<button class="action-btn" onclick="runPrimBtn()">Run Prim</button>
 				</li>
 				<li>
-					<button class="action-btn" onclick="runPrim()">Run Prim</button>
-				</li>
-				<li>
-					<button class="action-btn" onclick="clearGraph()">Delete Graph</button>
+					<button class="action-btn" onclick="clearGraph()">Clear Graph</button>
 				</li>
 			</ul>
 		</div>

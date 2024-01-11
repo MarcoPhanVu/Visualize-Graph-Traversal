@@ -83,13 +83,15 @@ body {
 	overflow-y: scroll;
 }
 
-#logs > h2 {
+h2.actions-log-title {
 	position: fixed;
 	padding: 12px;
 	background-color: rgb(184, 255, 188);
 	top: 0px;
 	left: 0px;
 	width: calc(16% - 16px);
+	z-index: 20;
+	text-align: center;
 }
 
 #logs > p.actionTook.chosen {
