@@ -1,7 +1,7 @@
 // let lala = {startNode: '0', endNode: '3', weight: 15};
 
 // console.log("THIS IS LALA: ", connectionExisted(lala));
-
+console.log("PRIM ACTIVATED");
 delay = 300;
 
 let graph = []

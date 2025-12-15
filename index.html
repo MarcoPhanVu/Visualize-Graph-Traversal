@@ -1,26 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Graph Traversal Visualized</title>
-	<link rel="stylesheet" href="./style.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js" integrity="sha512-tBzZQxySO5q5lqwLWfu8Q+o4VkTcRGOeQGVQ0ueJga4A1RKuzmAu5HXDOXLEjpbKyV7ow9ympVoa6wZLEzRzDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-</head>
-<body>
-	<header class="hidden">
-		<p class="title">Graph Traversal Visualization</p>
-		<p class="sub-title">Dijsktra and Prim</p>
-	</header>
-	<div class="main-container">
-		<div class="displayer" id="displayer">
-			<h2 class="actions-log-title">Actions Log</h2>
-			<div id="logs">
-				<p>hehe</p>
-				<p>hehe</p>
-			</div>
-			<!-- <table class="node-table">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Graph Traversal Visualized</title>
+        <link rel="stylesheet" href="./style.css" />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"
+            integrity="sha512-tBzZQxySO5q5lqwLWfu8Q+o4VkTcRGOeQGVQ0ueJga4A1RKuzmAu5HXDOXLEjpbKyV7ow9ympVoa6wZLEzRzDg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+    </head>
+    <body>
+        <header class="hidden">
+            <p class="title">Graph Traversal Visualization</p>
+            <p class="sub-title">Dijsktra and Prim</p>
+        </header>
+        <div class="main-container">
+            <div class="displayer" id="displayer">
+                <h2 class="actions-log-title">Actions Log</h2>
+                <div id="logs">
+                    <p>hehe</p>
+                    <p>hehe</p>
+                </div>
+                <!-- <table class="node-table">
 				<thead class="node-list-table">
 					<tr>
 						<td>Ele</td>
@@ -56,10 +66,10 @@
 					</tr>
 				</tbody>
 			</table> -->
-			<svg class="line-container" width="100%" height="100%">
-				<line x1="100" y1="100" x2="400" y2="400"/>
-			</svg>
-			<!-- <svg class="node" width="100" height="100" style="top: 200px; left: 200px;" data-node-id="Node Org" data-node-held="false">
+                <svg class="line-container" width="100%" height="100%">
+                    <line x1="100" y1="100" x2="400" y2="400" />
+                </svg>
+                <!-- <svg class="node" width="100" height="100" style="top: 200px; left: 200px;" data-node-id="Node Org" data-node-held="false">
 				Node 1
 				<circle r="50" cy="50" cx="50" id="node-org"></circle>
 			</svg>
@@ -71,56 +81,66 @@
 				Node 1
 				<circle r="50" cy="50" cx="50"></circle>
 			</svg> -->
-
-		</div>
-		<div class="side-bar">
-			<ul class="actions-tab">
-				<li>
-					<button class="action-btn" onclick="createNode()">Create node</button>
-				</li>
-				<!-- <li>
+            </div>
+            <div class="side-bar">
+                <ul class="actions-tab">
+                    <li>
+                        <button class="action-btn" onclick="createNode()">
+                            Create node
+                        </button>
+                    </li>
+                    <!-- <li>
 					<button class="action-btn" onclick="deleteNode()">Delete node</button>
 				</li> -->
-				<li>
-					<button class="action-btn" onclick="joinNode()">Join</button>
-					<input type="text" id="weight">
-				</li>
-				<!-- <li>
+                    <li>
+                        <button class="action-btn" onclick="joinNode()">
+                            Join
+                        </button>
+                        <input type="text" id="weight" />
+                    </li>
+                    <!-- <li>
 					<button class="action-btn" onclick="unjoinNode()">Unjoin</button>
 				</li> -->
-				<li>
-					<button class="action-btn" onclick="runDijkstra()">Run Dijkstra</button>
-				</li>
-				<li>
-					<button class="action-btn" onclick="runPrimBtn()">Run Prim</button>
-				</li>
-				<li>
-					<button class="action-btn" onclick="clearGraph()">Clear Graph</button>
-				</li>
-			</ul>
-		</div>
-	</div>
-	<div class="warning" id="joinNeed2N">
-		<h1 class="title">Warning</h1>
-		<p class="desc">Please select 2 nodes to join.</p>
-	</div>
-	<div class="warning" id="unjoinNeed2N">
-		<h1 class="title">Warning</h1>
-		<p class="desc">Please select 2 nodes to unjoin.</p>
-	</div>
-	<div class="warning" id="max2Nodes">
-		<h1 class="title">Warning</h1>
-		<p class="desc">Only 2 nodes can be selected at a time.</p>
-	</div>
-	<div class="warning" id="connectionExisted">
-		<h1 class="title">Warning</h1>
-		<p class="desc">These 2 nodes have been joined at that direction.</p>
-	</div>
+                    <li>
+                        <button class="action-btn" onclick="runDijkstra()">
+                            Run Dijkstra
+                        </button>
+                    </li>
+                    <li>
+                        <button class="action-btn" onclick="runPrimBtn()">
+                            Run Prim
+                        </button>
+                    </li>
+                    <li>
+                        <button class="action-btn" onclick="clearGraph()">
+                            Clear Graph
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="warning" id="joinNeed2N">
+            <h1 class="title">Warning</h1>
+            <p class="desc">Please select 2 nodes to join.</p>
+        </div>
+        <div class="warning" id="unjoinNeed2N">
+            <h1 class="title">Warning</h1>
+            <p class="desc">Please select 2 nodes to unjoin.</p>
+        </div>
+        <div class="warning" id="max2Nodes">
+            <h1 class="title">Warning</h1>
+            <p class="desc">Only 2 nodes can be selected at a time.</p>
+        </div>
+        <div class="warning" id="connectionExisted">
+            <h1 class="title">Warning</h1>
+            <p class="desc">
+                These 2 nodes have been joined at that direction.
+            </p>
+        </div>
 
-	<script src="./scripts/basicFuncs.js"></script>
-	<script src="./scripts/displayAll.js"></script>
-	<script src="./scripts/script.js"></script>
-	<script src="./scripts/algorithms/prim.js"></script>
-
-</body> 
+        <script src="./scripts/basicFuncs.js"></script>
+        <script src="./scripts/displayAll.js"></script>
+        <script src="./scripts/script.js"></script>
+        <script src="./scripts/algorithms/prim.js"></script>
+    </body>
 </html>

@@ -75,12 +75,14 @@ body {
 	background-color: aliceblue;
 	position: fixed;
 	width: 16%;
+	/* min-width: 320px; */
 	height: 40%;
 	display: flex;
 	text-align: center;
 	flex-direction: column;
 	padding: 12px;
 	overflow-y: scroll;
+	z-index: 5;
 }
 
 h2.actions-log-title {

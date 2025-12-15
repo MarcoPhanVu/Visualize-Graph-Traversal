@@ -407,6 +407,7 @@ function logAction(msg, act="") {
 function runPrimBtn() {
 	if (weightIndicator.value == "") {
 		runPrim();
+		console.log("Prim");
 		return;
 	}
 
